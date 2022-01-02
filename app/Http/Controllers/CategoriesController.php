@@ -16,10 +16,11 @@ class CategoriesController extends Controller
     }
 
     //Вывод списка новостей по конкретной категории
-    public function getNewsByCategories(string $category) {
+    public function show(string $category) {
         if (session()->has('news'))
             $this -> news  = session('news');
         else dd('No news category found in session!');
+
         $news = [];
 
         foreach ($this->news as $newsItem) {

@@ -51,14 +51,17 @@ class Controller extends BaseController
 
     public function getNewsById (int $id)
     {
-        $faker = Factory::create();
 
-        return [
-            'id' => $id,
-            'title' => $faker->jobTitle(),
-            'description' => $faker->text(250),
-            'author' => $faker->userName(),
-            'category' => $faker->word
-        ];
+        if (session()->has('news'))
+            $this -> news  = session('news');
+        else dd('No news found in session!');
+
+        foreach ($this->news as $itemNews) {
+            if ($itemNews['id'] == $id) {
+                return  $itemNews;
+            }
+        }
+
+      return dd('No news id found in session!');
     }
 }
