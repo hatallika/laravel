@@ -1,6 +1,8 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +18,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//news routes
+Route::get('/news', [NewsController::class, 'index'])
+    ->name('news.index');
+
+Route::get('/news/action/{id}', [NewsController::class, 'show'])
+    ->where('id', '\d+') // добавили проверку на числа в id если нет, 404
+    ->name('news.show');
+
+
+
+//Route::get('/hello/{name}',
+//    fn(string $name) => "Hello, {$name}");
+
+
