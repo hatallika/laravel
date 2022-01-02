@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Session;
+
 
 class Controller extends BaseController
 {
@@ -14,22 +16,26 @@ class Controller extends BaseController
 
     const numCategory = 5;
 
+    public $news = [];
+    public $categories = [];
+
     public function getNews(): array
     {
         //генерируем новости
         $faker = Factory::create();
-        $news = [];
-        $categories  = $this->getCategories(); // получим статичный массив категорий
+
+        $this->categories  = $this->getCategories(); // получим статичный массив категорий
         for($i=0; $i<10; $i++) {
-            $news [] = [
+            $this->news [] = [
                 'id' => $i,
                 'title' => $faker->jobTitle(),
                 'description' => $faker->text(250),
                 'author' => $faker->userName(),
-                'category' => $categories[rand(0, self::numCategory - 1)]
+                'category' => $this->categories[rand(0, self::numCategory - 1)]
             ];
         }
-        return $news;
+        session(['news' => $this->news]);
+        return $this->news;
     }
 
     public function getCategories(): array{
