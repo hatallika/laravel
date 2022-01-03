@@ -7,8 +7,8 @@
 <body>
     <h1>Категории новостей</h1>
     <ul>
-        <?php foreach ($categories as $category):?>
-            <li><a href="<?=route("news.category",['category' => $category])?>"><?=$category?></a></li>
+        <?php foreach ($categories as $idx_category => $category):?>
+            <li><a href="<?=route("news.category",['idx_category' => $idx_category])?>"><?=$category?></a></li>
         <?php endforeach;?>
 
     </ul>

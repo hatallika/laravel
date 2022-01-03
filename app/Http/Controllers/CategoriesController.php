@@ -10,26 +10,25 @@ class CategoriesController extends Controller
     public function index()
     {
 
-        $this->getNews(); // генерируем пока не реализовали состояния в будущем будем брать из DB
-        $categories = $this->categories;
+        $categories = $this->getCategories();
         return view('news.categories', ['categories' => $categories]);
     }
 
     //Вывод списка новостей по конкретной категории
-    public function show(string $category) {
-        if (session()->has('news'))
-            $this -> news  = session('news');
-        else dd('No news category found in session!');
+    public function show(string $idx_category) {
 
-        $news = [];
+        $news = $this->getNews();
+        $categories = $this->getCategories();
+        $category = $categories[$idx_category];
+        $categoryNews =[];
 
-        foreach ($this->news as $newsItem) {
+        foreach ($news as $newsItem) {
 
             if ($newsItem['category'] == $category) {
-                $news[] = $newsItem;
+                $categoryNews [] = $newsItem;
             }
         }
 
-        return view('news.index', ['news' => $news]); //переиспользовали шаблон вывода всех новостей
+        return view('news.index', ['news' =>  $categoryNews]); //переиспользовали шаблон вывода всех новостей
     }
 }

@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\InfoController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
@@ -19,6 +20,11 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 |
 */
 
+Route::get('/token', function (Request $request) {
+    $token = $request->session()->token();
+    $token = csrf_token();
+});
+
 Route::get('/', [InfoController::class, 'index']);
 
 
@@ -26,21 +32,21 @@ Route::get('/', [InfoController::class, 'index']);
 Route::get('/news', [NewsController::class, 'index'])
     ->name('news.index');
 
-Route::get('/news/action/{id}', [NewsController::class, 'show'])
+Route::get('/news/{id}', [NewsController::class, 'show'])
     ->where('id', '\d+') // добавили проверку на числа в id если нет, 404
     ->name('news.show');
 
 Route::get('/categories', [CategoriesController::class, 'index']);
 
-Route::get('/categories/{category}', [CategoriesController::class, 'show'])
+Route::get('/categories/{idx_category}', [CategoriesController::class, 'show'])
     ->name('news.category');
 
 
 
 //admin routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
-    Route::resource('/admin/news',AdminNewsController::class);
-    Route::resource('/admin/categories',AdminCategoryController::class);
+    Route::resource('/news',AdminNewsController::class);
+    Route::resource('/categories',AdminCategoryController::class);
 });
 
 
