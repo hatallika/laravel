@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 
 use App\Http\Controllers\CategoriesController;
@@ -45,6 +45,7 @@ Route::get('/categories/{idx_category}', [CategoriesController::class, 'show'])
 
 //admin routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+    Route::view('/', 'admin.index', ['someVariable' => 'someText'])->name('index');
     Route::resource('/news',AdminNewsController::class);
     Route::resource('/categories',AdminCategoryController::class);
 });
