@@ -6,7 +6,12 @@
 @section('header')
     <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="fw-light">Список новостей</h1>
+            <h1 class="fw-light">Список новостей
+
+                @isset($category)
+                    - {{$category}}
+                @endisset
+            </h1>
         </div>
     </div>
 @endsection
@@ -17,7 +22,6 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
         @forelse($news as $item)
-
 
             <div class="col">
                 <div class="card shadow-sm">
@@ -49,4 +53,9 @@
         @endforelse
 </div>
 @endsection
+@push('up')
+    <p class="float-end mb-1">
+        <a href="#">Вверх</a>
+    </p>
+@endpush
 

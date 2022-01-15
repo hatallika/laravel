@@ -1,11 +1,8 @@
-
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <title>@section('title') - GeekBrains @show</title>
-
-
     <!-- Bootstrap core CSS -->
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
 
@@ -27,9 +24,7 @@
 
 </head>
 <body>
-
 <x-header></x-header>
-
 <main>
     <section class="py-5 text-center container">
         @yield('header')

@@ -36,7 +36,7 @@ Route::get('/news/{id}', [NewsController::class, 'show'])
     ->where('id', '\d+') // добавили проверку на числа в id если нет, 404
     ->name('news.show');
 
-Route::get('/categories', [CategoriesController::class, 'index']);
+Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
 
 Route::get('/categories/{idx_category}', [CategoriesController::class, 'show'])
     ->name('news.category');
