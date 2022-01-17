@@ -14,10 +14,11 @@
     </div>
 @endsection
 @section('content')
-    {{-- Контент --}}
+    <div class="table-responsive">
+    </div>
 @endsection
-@push('js')
+{{-- @push('js')
     <script>
         alert("Hello, categories")
     </script>
-@endpush
+@endpush --}}

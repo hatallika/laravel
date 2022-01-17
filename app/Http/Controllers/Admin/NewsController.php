@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+
 class NewsController extends Controller
 {
     /**
@@ -25,7 +26,7 @@ class NewsController extends Controller
     public function create()
     {
         $categories = $this->getCategories();
-        return view('admin.create_news', ['categories'=>$categories]);
+        return view('admin.news.create', ['categories'=>$categories]);
     }
 
     /**
@@ -36,7 +37,14 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        return "Новость добавлена";
+        //gdd($request->all());
+
+        $request->validate([
+            'title' => ['required', 'string', 'min:5']
+        ]);
+
+        dd($request->all());
+
     }
 
     /**
