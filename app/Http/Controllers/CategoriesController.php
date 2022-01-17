@@ -29,6 +29,6 @@ class CategoriesController extends Controller
             }
         }
 
-        return view('news.index', ['news' =>  $categoryNews]); //переиспользовали шаблон вывода всех новостей
+        return view('news.index', ['news' =>  $categoryNews, 'category' => $category]); //переиспользовали шаблон вывода всех новостей
     }
 }

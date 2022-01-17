@@ -20,7 +20,7 @@ class NewsController extends Controller
     public function show(int $id)
     {
         $news = $this->getNewsById($id);
-        return view('news.show', [
+        return view('news.one', [
             'news' => $news
         ]);
     }

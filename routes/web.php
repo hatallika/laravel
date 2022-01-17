@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 
 use App\Http\Controllers\CategoriesController;
@@ -36,7 +36,7 @@ Route::get('/news/{id}', [NewsController::class, 'show'])
     ->where('id', '\d+') // добавили проверку на числа в id если нет, 404
     ->name('news.show');
 
-Route::get('/categories', [CategoriesController::class, 'index']);
+Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
 
 Route::get('/categories/{idx_category}', [CategoriesController::class, 'show'])
     ->name('news.category');
@@ -45,6 +45,7 @@ Route::get('/categories/{idx_category}', [CategoriesController::class, 'show'])
 
 //admin routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+    Route::view('/', 'admin.index', ['someVariable' => 'someText'])->name('index');
     Route::resource('/news',AdminNewsController::class);
     Route::resource('/categories',AdminCategoryController::class);
 });
