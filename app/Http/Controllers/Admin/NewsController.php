@@ -37,13 +37,16 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //gdd($request->all());
+        //dd($request->all());
 
         $request->validate([
             'title' => ['required', 'string', 'min:5']
         ]);
 
-        dd($request->all());
+        $data = json_encode($request->all());
+        file_put_contents(public_path('news_/data.json'), $data);
+
+        return response()->json($request->all());
 
     }
 
