@@ -56,5 +56,25 @@ class NewsTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function testViewNewsHasDataList()
+    {
+
+        $response = $this->get(route('news.index'));
+
+        $response->assertViewHasAll(['news']);
+    }
+
+    public function testViewAdminNewsCreateContainsData()
+    {
+
+        $response = $this->get(route('admin.news.create'));
+
+        $response->assertViewHas('categories', ['politics'=>'Политика', 'society'=>'Общество', 'interesting'=>'Интересное', 'world'=>'В мире', 'culture'=>'Культура']);
+    }
+
+
+
+
+
 
 }

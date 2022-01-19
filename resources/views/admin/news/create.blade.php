@@ -6,11 +6,11 @@
     <h2 class="h2">Добавить новость </h2>
 @endsection
 @section('content')
+
     @if($errors->any())
         @foreach($errors->all() as $error)
             <x-alert type="danger" :message="$error"></x-alert>
         @endforeach
-
     @endif
 
     <form method="POST" action="{{route("admin.news.store", ['q' => 1]) }}">
