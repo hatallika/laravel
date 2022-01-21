@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Http\Request;
+
 
 
 class NewsController extends Controller
@@ -15,7 +17,39 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('admin.news.index');
+        $model = new News();
+        $news = $model->getNews();
+
+        //dd($model->getNewsById(5));
+
+        /*dd(
+            \DB::table('categories')->join('news', 'news.category_id', '=', 'categories.id')
+            ->select('categories.*', 'news.title as newsTitle')
+            ->get()
+        );*/
+
+
+//            $news = \DB::table('news')
+//                //->where('title', 'like', '%'.request()->query('s').'%') //условие, где title содержитьтекст из request параметра ?s=text
+//                //->where('id', '<', 10)
+//                /*    ->where([
+//                        ['title', 'like', '%'.request()->query('s').'%'],
+//                        ['id', '<', 10],
+//                        ['display', '=', true]
+//                ])
+//                ->orWhere('display', '=', false)*/
+//                    ->whereNotBetween('id', [1, 3])
+//                ->orderBy('id', 'desc')
+//                ->offset(5)
+//                ->limit(3)
+//                ->get()->toArray();
+
+
+
+        return view('admin.news.index', [
+            'newsList' => $news
+        ]);
+
     }
 
     /**
