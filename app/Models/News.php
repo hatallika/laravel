@@ -15,7 +15,7 @@ class News extends Model
     {
 
         return \DB::table($this->table)
-            ->select(['id', 'title', 'slug',  'author', 'status', 'description'])
+            ->select(['id', 'title', 'slug',  'author', 'status', 'description', 'category_id'])
             ->get()
             ->toArray();//преобразуем коллекцию в массив
     }
@@ -24,6 +24,15 @@ class News extends Model
     public function getNewsById(int $id)
     {
         return \DB::table($this->table)->find($id);
+    }
+
+    public function getNewsByColumn( $column, $value)
+    {
+        return \DB::table($this->table)
+            ->select(['id', 'title', 'slug',  'author', 'status', 'description', 'category_id'])
+            ->where($column, '=' , $value)
+            ->get()
+            ->toArray();
     }
 
 }
