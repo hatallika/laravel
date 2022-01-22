@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index');
+        return view('order.form');
     }
 
     /**
@@ -24,7 +23,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        //
     }
 
     /**
@@ -35,9 +34,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'phone'=> 'required|regex:/[0-9]{9}/',
+            'email' => 'required|email'
+        ]);
+        //добавляем запись в файл
+        $file = 'data.json';
+        $data = json_encode($request->except('_token'));
+        $current = file_get_contents(asset('news_/'.$file));
+        $current .= $data. "\n";
+        file_put_contents(public_path('news_/data.json'), $current);
 
-        return "Категория добавлена";
-
+        //return response()->json($request->except('_token')); //
+        return "Заказ выгрузки отправлен, файл добавлен в папку menu/"; //
     }
 
     /**

@@ -2,8 +2,10 @@
 
 
 use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\InfoController;
-use Illuminate\Http\Request;
+    use App\Http\Controllers\FeedBackController;
+    use App\Http\Controllers\InfoController;
+    use App\Http\Controllers\OrderController;
+    use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
@@ -49,6 +51,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::resource('/news',AdminNewsController::class);
     Route::resource('/categories',AdminCategoryController::class);
 });
+
+Route::resource('/feedback', FeedBackController::class);
+Route::resource('/order', OrderController::class);
 
 
 //Route::get('/hello/{name}',

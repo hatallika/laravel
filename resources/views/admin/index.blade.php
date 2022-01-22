@@ -7,6 +7,6 @@
         <div class="btn-group me-2">
             @include('inc.include', ['name' => 'Иван'])
         </div>
-
     </div>
 @endsection
+
