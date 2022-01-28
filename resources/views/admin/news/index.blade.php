@@ -16,6 +16,7 @@
 @endsection
 @section('content')
     <div class="table-responsive">
+        @include('inc.message')
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -24,10 +25,12 @@
                     <th>Статус</th>
                     <th>Автор</th>
                     <th>Содержание</th>
+                    <th>Категория</th>
                     <th>Опции</th>
                 </tr>
             </thead>
             <tbody>
+
             @forelse($newsList as $news)
                 <tr>
                     <td>{{$news->id}}</td>
@@ -35,19 +38,22 @@
                     <td>{{$news->status}}</td>
                     <td>{{$news->author}}</td>
                     <td>{{$news->description}}</td>
+                    <td>{{optional($news->category)->title}}</td>
                     <td>
                         <a href="{{route('admin.news.edit', ['news' => $news->id]) }}">Ред.</a>&nbsp;
                         <a href="javascript:;" style="color:red;">Уд.</a>
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="6">Записй нет</td></tr>
+                <tr><td colspan="7">Записей нет</td></tr>
             @endforelse
             </tbody>
 
 
         </table>
+
     </div>
+    {{$newsList->links()}}
     {{--<x-alert type="success" message="Успех! Новость добавлена"></x-alert>
     <x-alert type="warning" message="Предупреждение!"></x-alert>
     <x-alert type="danger" message="Критическая ошибка!"></x-alert>

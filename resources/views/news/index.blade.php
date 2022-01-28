@@ -29,7 +29,7 @@
 
                     <div class="card-body">
                         <div class="card-header">
-                            <strong><a href="{{route("news.show",['id' => $news->id]) }}">
+                            <strong><a href="{{route("news.show",['news' => $news->id]) }}">
                                     {{$news->title}}
                                 </a></strong>
                         </div>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -11,6 +12,14 @@ class Category extends Model
 
     protected $table = 'categories';
 
+    public static $availableFields = ['id', 'title', 'description', 'created_at'];
+
+    public function news(): HasMany
+    {
+        return $this->hasMany(News::class, 'category_id', 'id');
+    }
+
+    /*
     public function getCategories()
     {
         return \DB::table($this->table)
@@ -18,11 +27,13 @@ class Category extends Model
             ->get()
             ->toArray();
     }
-
+    */
+    /*
     public function getCategoryById(int $id)
     {
         return \DB::table($this->table)->find($id);
     }
+    */
 
 
 }

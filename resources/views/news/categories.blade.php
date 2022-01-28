@@ -14,6 +14,7 @@
 @section('content')
 
     <ul class="nav flex-column">
+
        @foreach ($categories as $category)
             <li class="nav-item"><a class="nav-link" href="{{route("news.category",['id_category' => $category->id])}}">
                     {{$category->title}}</a>

@@ -7,13 +7,9 @@
 @endsection
 @section('content')
 
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-            <x-alert type="danger" :message="$error"></x-alert>
-        @endforeach
-    @endif
+    @include('inc.message')
 
-    <form method="POST" action="{{route("admin.news.store", ['q' => 1]) }}">
+    <form method="POST" action="{{route("admin.news.store") }}">
         <input type="hidden" name="_token" value="{{csrf_token()}}"/>
 
         <div class="form-group">
@@ -43,11 +39,12 @@
         </div>
 
         <div class="form-group">
-            <label for="category">Категория новости</label>
-            <select class="form-control" name="category" id="category">
-                @foreach ($categories as $key => $category)
+            <label for="category_id">Категория новости</label>
+            <select class="form-control" name="category_id" id="category_id">
+                @foreach ($categories as $category)
 
-                    <option value="{{$key}}" @if(old('category')===$key) selected @endif>{{$category}}</option>
+                    <option value="{{$category->id}}" @if(old('category_id') == $category->id) selected @endif>{{$category->title}} </option>
+
                 @endforeach
             </select>
         </div>

@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoriesController;
     use App\Http\Controllers\FeedBackController;
     use App\Http\Controllers\InfoController;
     use App\Http\Controllers\OrderController;
+    use App\Models\News;
     use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
@@ -22,10 +23,10 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 |
 */
 
-Route::get('/token', function (Request $request) {
+/*Route::get('/token', function (Request $request) {
     $token = $request->session()->token();
     $token = csrf_token();
-});
+});*/
 
 Route::get('/', [InfoController::class, 'index']);
 
@@ -34,8 +35,8 @@ Route::get('/', [InfoController::class, 'index']);
 Route::get('/news', [NewsController::class, 'index'])
     ->name('news.index');
 
-Route::get('/news/{id}', [NewsController::class, 'show'])
-    ->where('id', '\d+') // добавили проверку на числа в id если нет, 404
+Route::get('/news/{news}', [NewsController::class, 'show'])
+    ->where('news', '\d+') // добавили проверку на числа в id если нет, 404
     ->name('news.show');
 
 Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
@@ -54,6 +55,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 
 Route::resource('/feedback', FeedBackController::class);
 Route::resource('/order', OrderController::class);
+
+Route::get('/collection', function(){
+   $array = ['Anna', 'Victor', 'Alexey', 'dima', 'ira', 'vasya', 'Olya'];
+   $collection = collect($array);
+   $collection = collect(str_split('AABBCCCD'));
+   /*dd($collection->map(function ($item){
+       return mb_strtoupper($item);
+   })->sortKeys());*/
+
+    //dd(News::all()->pluck('title')->all());
+});
 
 
 //Route::get('/hello/{name}',

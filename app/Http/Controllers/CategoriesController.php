@@ -11,8 +11,9 @@ class CategoriesController extends Controller
     //Вывод списка категорий новостей
     public function index()
     {
-        $model = new Category();
-        $categories = $model->getCategories();
+
+        //$categories = Category::all();
+        $categories = Category::query()->select(Category::$availableFields)->get();
         //dd($categories);
         return view('news.categories', ['categories' => $categories]);
     }
