@@ -19,6 +19,7 @@ class NewsController extends Controller
     public function index()
     {
         $news = News::query()
+            //->whereHas('category', function ($query){ $query->where('id', '>', 2);})
             ->with('category')
             //->select(News::$availableFields)
             ->paginate(5)
@@ -142,6 +143,13 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+
+        $deleted = $news->delete();
+        if($deleted){
+            return redirect()->route('admin.news.index')
+                ->with('success', 'Запись успешно удалена');
+        }
+        return back()->with('error', 'Не удалось удалить запись')
+            ->withInput();
     }
 }

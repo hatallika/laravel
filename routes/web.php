@@ -45,7 +45,6 @@ Route::get('/categories/{id_category}', [NewsController::class, 'show_by_categor
     ->name('news.category');
 
 
-
 //admin routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::view('/', 'admin.index', ['someVariable' => 'someText'])->name('index');

@@ -32,6 +32,7 @@
             <tbody>
 
             @forelse($newsList as $news)
+
                 <tr>
                     <td>{{$news->id}}</td>
                     <td>{{$news->title}}</td>
@@ -40,8 +41,17 @@
                     <td>{{$news->description}}</td>
                     <td>{{optional($news->category)->title}}</td>
                     <td>
-                        <a href="{{route('admin.news.edit', ['news' => $news->id]) }}">Ред.</a>&nbsp;
-                        <a href="javascript:;" style="color:red;">Уд.</a>
+                        <a href="{{route('admin.news.edit', ['news' => $news]) }}">Ред.</a>&nbsp;
+                        {{--<a href="javascript:;" style="color:red;">Уд.</a> --}}
+                        <form method="post" action="{{ route('admin.news.destroy', ['news' => $news]) }}">
+                            <!-- here the '1' is the id of the post which you want to delete -->
+
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+
+                            <button type="submit">Удалить</button>
+                        </form>
+
                     </td>
                 </tr>
             @empty

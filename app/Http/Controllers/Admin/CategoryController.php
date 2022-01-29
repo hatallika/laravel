@@ -39,8 +39,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $created = Category::create($request->only(['title', 'description']));
+        if($created){
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Запись успешно добавлена');
+        }
 
-        return "Категория добавлена";
+        return back()->with('error', 'Не удалось добавить запись')
+            ->withInput();
 
     }
 
@@ -63,7 +69,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit', [
+            'category' => $category
+        ]);
     }
 
     /**
@@ -75,7 +83,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $updated = $category->fill($request->only(['title', 'description']))
+            ->save();
+
+        if($updated){
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Запись успешно обновлена');
+        }
+        return back()->with('error', 'Не удалось обновить запись')
+            ->withInput();
     }
 
     /**
@@ -86,6 +102,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $deleted = $category->delete();
+        if($deleted){
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Запись успешно удалена');
+        }
+        return back()->with('error', 'Не удалось удалить запись')
+            ->withInput();
     }
 }

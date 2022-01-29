@@ -11,12 +11,17 @@
     </div>
 @endsection
 @section('content')
+    @include('inc.message')
     <div>
         <form method="post" action="{{route("feedback.store") }}">
             @csrf
             <div class="form-group">
-                <label for="title">Имя пользователя</label>
+                <label for="name">Имя пользователя</label>
                 <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" class="form-control" id="email" name="email" required>
             </div>
             <div class="form-group">
                 <label for="comment">Отзыв</label>

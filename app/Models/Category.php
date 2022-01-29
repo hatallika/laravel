@@ -14,6 +14,12 @@ class Category extends Model
 
     public static $availableFields = ['id', 'title', 'description', 'created_at'];
 
+    protected $fillable = [
+        'id',
+        'title',
+        'description'
+    ];
+
     public function news(): HasMany
     {
         return $this->hasMany(News::class, 'category_id', 'id');

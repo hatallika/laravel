@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
 class FeedBackController extends Controller
@@ -13,8 +14,9 @@ class FeedBackController extends Controller
      */
     public function index()
     {
+        $feedbackList = Feedback::query()->select(Feedback::$availableFields)->get();
 
-        return view('feedback.index');
+        return view('feedback.index', ['feedbackList' => $feedbackList]);
     }
 
     /**
@@ -35,8 +37,16 @@ class FeedBackController extends Controller
      */
     public function store(Request $request)
     {
-        $feedback = $request->except('_token');
-        return view('feedback.index', ['feedback' => $feedback]);
+        //$feedback = $request->except('_token');
+
+        $created = Feedback::create($request->only(['name', 'comment', 'email']));
+        if($created){
+            return redirect()->route('feedback.index')
+                ->with('success', 'Запись успешно добавлена');
+        }
+
+        return back()->with('error', 'Не удалось добавить запись')
+            ->withInput();
     }
 
     /**

@@ -41,7 +41,14 @@
                     </td>
                     <td>
                         <a href="{{route('admin.categories.edit', ['category' => $category]) }}">Ред.</a>&nbsp;
-                        <a href="javascript:;" style="color:red;">Уд.</a>
+                        {{--<a href="javascript:;" style="color:red;">Уд.</a>--}}
+                        <form method="post" action="{{ route('admin.categories.destroy', ['category' => $category]) }}">
+
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+
+                            <button type="submit">Удалить</button>
+                        </form>
                     </td>
                 </tr>
             @empty
