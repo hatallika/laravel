@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
+use App\Models\News;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -61,15 +63,19 @@ class NewsTest extends TestCase
 
         $response = $this->get(route('news.index'));
 
-        $response->assertViewHasAll(['news']);
+        $response->assertViewHasAll(['newsList']);
     }
 
     public function testViewAdminNewsCreateContainsData()
     {
-
+        $categoriesObj = (new Category())->getCategories();
+        $categories = [];
+        foreach ($categoriesObj as $item) {
+            $categories[] = $item->title;
+        }
         $response = $this->get(route('admin.news.create'));
 
-        $response->assertViewHas('categories', ['politics'=>'Политика', 'society'=>'Общество', 'interesting'=>'Интересное', 'world'=>'В мире', 'culture'=>'Культура']);
+        $response->assertViewHas('categories', $categories);
     }
 
 

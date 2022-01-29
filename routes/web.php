@@ -40,7 +40,7 @@ Route::get('/news/{id}', [NewsController::class, 'show'])
 
 Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
 
-Route::get('/categories/{idx_category}', [CategoriesController::class, 'show'])
+Route::get('/categories/{id_category}', [NewsController::class, 'show_by_category'])
     ->name('news.category');
 
 
