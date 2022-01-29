@@ -39,11 +39,6 @@ class NewsController extends Controller
      */
     public function create()
     {
-        /*$categoriesObj = (new Category())->getCategories();
-        $categories = [];
-        foreach ($categoriesObj as $item) {
-            $categories[] = $item->title;
-        }*/
 
         //$categories = Category::query()->get();
         $categories = Category::all();
