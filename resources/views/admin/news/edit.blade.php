@@ -6,12 +6,9 @@
     <h2 class="h2">Редактировать новость </h2>
 @endsection
 @section('content')
+    <div>
 
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-            <x-alert type="danger" :message="$error"></x-alert>
-        @endforeach
-    @endif
+    @include('inc.message')
 
     <form method="POST" action="{{route("admin.news.update", ['news' => $news]) }}">
         {{--<input type="hidden" name="_token" value="{{csrf_token()}}"/>--}}
@@ -21,11 +18,13 @@
         <div class="form-group">
             <label for="title">Заголовок новости</label>
             <input type="text" class="form-control" id="title" name="title" value="{{$news->title}}">
+            @error('title') <strong style="color: red;">{{$message}}</strong>@enderror
         </div>
 
         <div class="form-group">
             <label for="author">Автор</label>
             <input type="text" class="form-control" id="author" name="author" value="{{$news->author}}" }>
+            @error('author') <strong style="color: red;">{{$message}}</strong>@enderror
         </div>
 
         <div class="form-group">
@@ -47,17 +46,18 @@
         <div class="form-group">
             <label for="category_id">Категория новости</label>
             <select class="form-control" name="category_id" id="category_id">
-                @foreach ($categories as $item)
+                @foreach ($categories as $category)
 
-                    <option value="{{$item->id}}" @if($news->category_id == $item->id) selected @endif>{{$item->title}}</option>
+                    <option value="{{$category->id}}" @if($news->category_id == $category->id) selected @endif>{{$category->title}}</option>
 
                 @endforeach
             </select>
+            @error('category_id') <strong style="color:red;">{{$message}}</strong>@enderror
         </div>
 
 
 
         <input type="submit" class="btn btn-success float-end mt-2" value="Сохранить">
     </form>
-
+    </div>
 @endsection

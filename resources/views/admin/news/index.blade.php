@@ -42,16 +42,15 @@
                     <td>{{optional($news->category)->title}}</td>
                     <td>
                         <a href="{{route('admin.news.edit', ['news' => $news]) }}">Ред.</a>&nbsp;
-                        {{--<a href="javascript:;" style="color:red;">Уд.</a> --}}
-                        <form method="post" action="{{ route('admin.news.destroy', ['news' => $news]) }}">
-                            <!-- here the '1' is the id of the post which you want to delete -->
+                        <a href="javascript:;" class="delete" rel="{{$news->id}}" style="color:red;">Уд.</a>
+                    {{--    <form method="post" action="{{ route('admin.news.destroy', ['news' => $news]) }}">
 
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
 
                             <button type="submit">Удалить</button>
                         </form>
-
+                    --}}
                     </td>
                 </tr>
             @empty
@@ -69,3 +68,34 @@
     <x-alert type="danger" message="Критическая ошибка!"></x-alert>
     --}}
 @endsection
+@push('js')
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function (){
+            const el = document.querySelectorAll(".delete");
+            el.forEach(function(e, k) {
+                e.addEventListener('click', function (){
+                    const id = e.getAttribute("rel");
+                    if(confirm("Подтверждаете удаление записи с #ID=" + id + "?")){
+                        send('/admin/news/' + id).then(()=>{
+                            location.reload();
+                        });
+                    }
+                });
+
+            });
+        });
+
+        async function send(url) {
+            let response = await fetch(url,  {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+
+            let result = await response.json();
+            return result.ok;
+
+        }
+    </script>
+@endpush
