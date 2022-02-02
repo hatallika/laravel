@@ -45,7 +45,7 @@ class EditRequest extends FormRequest
     {
         return [
           'title' => 'заголовок',
-            'author' => 'автор новости'
+          'author' => 'автор новости'
         ];
     }
 }

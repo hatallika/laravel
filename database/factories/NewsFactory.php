@@ -5,7 +5,7 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+
 
 class NewsFactory extends Factory
 {
@@ -17,14 +17,13 @@ class NewsFactory extends Factory
      */
     public function definition()
     {
-        
         $title = $this->faker->jobTitle();
         return [
-            'title' => $title,
-            'slug' => \Str::slug($title),
+            'title'  => $title,
+            'slug'   => \Str::slug($title),
             'author' => $this->faker->userName(),
-            'status' => 'active',
-            'description' => $this->faker->text(150),
+            'status' => 'ACTIVE',
+            'description' => $this->faker->text(150)
         ];
     }
 }

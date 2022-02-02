@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sources\CreateRequest;
+use App\Http\Requests\Sources\EditRequest;
 use App\Models\Source;
 use Illuminate\Http\Request;
 
@@ -35,11 +37,10 @@ class SourcesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $created = Source::create(
-            $request->only(['title', 'description', 'url'])
-        );
+        $created = Source::create($request->validated());
+
         if($created){
             return redirect()->route('admin.sources.index')
                 ->with('success', 'Запись успешно добавлена');
@@ -79,9 +80,9 @@ class SourcesController extends Controller
      * @param Source $source
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Source $source)
+    public function update(EditRequest $request, Source $source)
     {
-        $updated = $source->fill($request->only(['title', 'description', 'url']))->save();
+        $updated = $source->fill($request->validated())->save();
 
         if($updated){
             return redirect()->route('admin.sources.index')
@@ -100,10 +101,12 @@ class SourcesController extends Controller
     public function destroy(Source $source)
     {
         $deleted = $source->delete();
-        if ($source->trashed()) {
+
+        /*проверить в корзине при soft delete
+         * if ($source->trashed()) {
             return redirect()->route('admin.sources.index')
                 ->with('success', 'Запись успешно удалена в корзину');
-        }
+        }*/
         if($deleted){
             return redirect()->route('admin.sources.index')
                 ->with('success', 'Запись успешно удалена');

@@ -1,6 +1,6 @@
 <?php
-declare(strict_types=1);
-namespace App\Http\Requests\News;
+
+namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,9 +11,8 @@ class CreateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
-       //проверка
         return true;
     }
 
@@ -25,28 +24,22 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' =>['required', 'integer'],
             'title' => ['required', 'string', 'min:5'],
-            'author'=>['required', 'string', 'min:2'],
-            'status'=>['required', 'string'],
-            'image'=>['nullable', 'file', 'image', 'mimes:jpg,png'],
-            'description' => ['nullable', 'string', 'max:1000'],
-            'display' => ['nullable', 'boolean']
+            'description'=>['nullable', 'string', 'max:1000']
         ];
     }
 
-    public function messages():array
+    public function messages()
     {
         return [
             'required' => 'Необходимо заполнить поле :attribute.'
         ];
     }
 
-    public function attributes():array
+    public function attributes()
     {
         return [
-            'title' => 'заголовок',
-            'author' => 'автор новости'
+            'title' => 'название категории',
         ];
     }
 }

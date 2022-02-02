@@ -12,11 +12,13 @@
 @section('content')
     {{-- Форма --}}
     <div>
+        @include('inc.message')
         <form method="post" action="{{route("admin.categories.store") }}">
             @csrf
             <div class="form-group">
-                <label for="title">Наименование категории</label>
-                <input type="text" class="form-control" id="title" name="title" required>
+                <label for="title">Название категории</label>
+                <input type="text" class="form-control" id="title" name="title">
+                @error('title') <strong style="color:red;">{{$message}}</strong>@enderror
             </div>
             <div class="form-group">
                 <label for="description">Описание категории</label>

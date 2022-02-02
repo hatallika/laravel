@@ -16,15 +16,18 @@
             @csrf
             <div class="form-group">
                 <label for="title">Название источника</label>
-                <input type="text" class="form-control" id="title" name="title" required>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Введите название">
+                @error('title') <span style="color: red">{{$message}}</span> @enderror
             </div>
             <div class="form-group">
                 <label for="description">Описание источника</label>
-                <textarea class="form-control" name="description" id="description" cols="30" rows="3"></textarea>
+                <textarea class="form-control" name="description" id="description" cols="30" rows="3" placeholder="Введите описание источника"></textarea>
+                @error('description') <span style="color: red">{{$message}}</span> @enderror
             </div>
             <div class="form-group">
-                <label for="url">Url</label>
-                <input type="text" class="form-control" id="url" name="url" required>
+                <label for="url">Ссылка на источник</label>
+                <input type="text" class="form-control" id="url" name="url" placeholder="http://">
+                @error('url') <span style="color: red">{{$message}}</span> @enderror
             </div>
 
             <button type="submit" class="btn btn-success float-end mt-2">Добавить</button>

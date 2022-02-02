@@ -154,7 +154,8 @@ class NewsController extends Controller
         }
 
 
-        /*$deleted = $news->delete();
+        /*deleted from form
+         * $deleted = $news->delete();
         if($deleted){
             return redirect()->route('admin.news.index')
                 ->with('success', 'Запись успешно удалена');

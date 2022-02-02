@@ -14,8 +14,8 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'title' => 'Some Title',
-            'description' => 'Some Description'
+            'title' => 'Some title',
+            'description' => 'Some description'
         ];
     }
 }
