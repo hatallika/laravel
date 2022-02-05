@@ -2,6 +2,7 @@
 
 
     use App\Http\Controllers\Account\IndexController as AccountController;
+    use App\Http\Controllers\Admin\ProfileController;
     use App\Http\Controllers\Admin\SourcesController;
     use App\Http\Controllers\CategoriesController;
     use App\Http\Controllers\FeedBackController;
@@ -57,11 +58,12 @@ Route::group(['middleware' =>'auth'], function (){
         return redirect()->route('login');
     })->name('account.logout');
 
-    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function(){
         Route::view('/', 'admin.index', ['someVariable' => 'someText'])->name('index');
         Route::resource('/news',AdminNewsController::class);
         Route::resource('/categories',AdminCategoryController::class);
         Route::resource('/sources',SourcesController::class);
+        Route::resource('/users', ProfileController::class);
     });
 });
 
