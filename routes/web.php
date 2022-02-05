@@ -1,17 +1,16 @@
     <?php
 
 
+    use App\Http\Controllers\Account\IndexController as AccountController;
     use App\Http\Controllers\Admin\SourcesController;
     use App\Http\Controllers\CategoriesController;
     use App\Http\Controllers\FeedBackController;
     use App\Http\Controllers\InfoController;
     use App\Http\Controllers\OrderController;
-    use App\Models\News;
-    use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\Admin\NewsController as AdminNewsController;
-use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+    use Illuminate\Support\Facades\Route;
+    use App\Http\Controllers\NewsController;
+    use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+    use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 
 
 /*
@@ -48,33 +47,34 @@ Route::get('/categories/{id_category}', [NewsController::class, 'show_by_categor
 
 
 //admin routes
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
-    Route::view('/', 'admin.index', ['someVariable' => 'someText'])->name('index');
-    Route::resource('/news',AdminNewsController::class);
-    Route::resource('/categories',AdminCategoryController::class);
-    Route::resource('/sources',SourcesController::class);
+Route::group(['middleware' =>'auth'], function (){
+
+     Route::get('/account', AccountController::class)
+        ->name('account');
+
+    Route::get('/account/logout', function (){
+        \Auth::logout();
+        return redirect()->route('login');
+    })->name('account.logout');
+
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+        Route::view('/', 'admin.index', ['someVariable' => 'someText'])->name('index');
+        Route::resource('/news',AdminNewsController::class);
+        Route::resource('/categories',AdminCategoryController::class);
+        Route::resource('/sources',SourcesController::class);
+    });
 });
+
+
 
 Route::resource('/feedback', FeedBackController::class);
 Route::resource('/order', OrderController::class);
 
-Route::get('/collection', function(){
-   $array = ['Anna', 'Victor', 'Alexey', 'dima', 'ira', 'vasya', 'Olya'];
-   $collection = collect($array);
-   $collection = collect(str_split('AABBCCCD'));
-   /*dd($collection->map(function ($item){
-       return mb_strtoupper($item);
-   })->sortKeys());*/
-
-    //dd(News::all()->pluck('title')->all());
-});
+/*Route::get('/', function () {
+    return view('welcome');
+});*/
 
 
-//Route::get('/hello/{name}',
-//    fn(string $name) => "Hello, {$name}");
-
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
