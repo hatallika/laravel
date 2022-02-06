@@ -56,6 +56,7 @@ class NewsTest extends TestCase
 
         $response->assertJson($responseData);
         $response->assertStatus(200);
+
     }
 
     public function testViewNewsHasDataList()

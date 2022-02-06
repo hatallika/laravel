@@ -21,9 +21,26 @@
 @endsection
 @section('content')
 
-    @isset($feedback)
-        Имя пользователя: {{$feedback['name']}} <br>
-        Отзыв:  {{$feedback['comment']}}
-                @else <p>Здесь будут отзывы пользователей</p>
+   @include('inc.message')
+
+    @isset($feedbackList)
+                <div class="row">
+
+        @foreach($feedbackList as $feedback)
+                <div class="col-sm-6">
+                    <div class="card" >
+                        <div class="card-body">
+                            <h5 class="card-title">{{$feedback->name}}</h5>
+                            <p class="card-text">{{$feedback->comment}}</p>
+                            <span>E-mail: {{$feedback->email}}</span>
+
+                        </div>
+                    </div>
+                </div>
+        @endforeach
+        </div>
+
+
+    @else <p>Здесь будут отзывы пользователей</p>
     @endisset
 @endsection

@@ -12,8 +12,9 @@ class NewsController extends Controller
     public function index()
     {
         //$news = $this->getNews();
-        $model = new News();
-        $news = $model->getNews();
+
+        $news = News::query()->select(News::$availableFields)->get();
+
 
         return view('news.index', [
             'newsList' => $news
@@ -21,26 +22,20 @@ class NewsController extends Controller
     }
 
     //конкретная новость
-    public function show(int $id)
+    public function show(News $news)
     {
-        $model = new News();
-        $news = $model->getNewsById($id);
 
-        return view('news.one', [
+        return view('news.show', [
             'news' => $news
         ]);
     }
 
     //Вывод списка новостей по конкретной категории
     public function show_by_category(string $id_category) {
-        $model = new News();
-        $news = $model->getNewsByColumn($column = 'category_id', $id_category);
 
+        $news = News::query()->select(News::$availableFields)->where('category_id', '=', $id_category)->get();
+        $category = Category::where('id', $id_category)->value('title');
 
-
-        $category = (new Category())->getCategoryById($id_category);
-        //dd($category);
-
-        return view('news.index', ['newsList' =>  $news, 'category' => $category->title]); //переиспользовали шаблон вывода всех новостей
+        return view('news.index', ['newsList' =>  $news, 'category' => $category]); //переиспользовали шаблон вывода всех новостей
     }
 }

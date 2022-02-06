@@ -19,6 +19,13 @@
                     Категории
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.sources.*')) active @endif" href="{{route('admin.sources.index')}}">
+                    <span data-feather="file"></span>
+                    Источники загрузки
+                </a>
+            </li>
+
         </ul>
 
     </div>

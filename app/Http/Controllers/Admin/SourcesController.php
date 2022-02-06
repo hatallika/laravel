@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Source;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class SourcesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-
-        //$categories = Category::query()->select(Category::$availableFields)->get();
-        $categories = Category::with('news')->paginate(5);
-        return view('admin.categories.index', ['categories' => $categories]);
+        $sources = Source::query()->select(Source::$availableFields)->get();
+        return view('admin.sources.index', ['sources' => $sources]);
     }
 
     /**
@@ -28,7 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.sources.create');
     }
 
     /**
@@ -39,24 +37,24 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $created = Category::create($request->only(['title', 'description']));
+        $created = Source::create(
+            $request->only(['title', 'description', 'url'])
+        );
         if($created){
-            return redirect()->route('admin.categories.index')
+            return redirect()->route('admin.sources.index')
                 ->with('success', 'Запись успешно добавлена');
         }
-
         return back()->with('error', 'Не удалось добавить запись')
             ->withInput();
-
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Category $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
         //
     }
@@ -64,13 +62,13 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Category $category
+     * @param Source $source
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Source $source)
     {
-        return view('admin.categories.edit', [
-            'category' => $category
+        return view('admin.sources.edit', [
+            'source' => $source
         ]);
     }
 
@@ -78,16 +76,15 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param Category $category
+     * @param Source $source
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Source $source)
     {
-        $updated = $category->fill($request->only(['title', 'description']))
-            ->save();
+        $updated = $source->fill($request->only(['title', 'description', 'url']))->save();
 
         if($updated){
-            return redirect()->route('admin.categories.index')
+            return redirect()->route('admin.sources.index')
                 ->with('success', 'Запись успешно обновлена');
         }
         return back()->with('error', 'Не удалось обновить запись')
@@ -97,17 +94,27 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Category $category
+     * @param Source $source
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Source $source)
     {
-        $deleted = $category->delete();
+        $deleted = $source->delete();
+        if ($source->trashed()) {
+            return redirect()->route('admin.sources.index')
+                ->with('success', 'Запись успешно удалена в корзину');
+        }
         if($deleted){
-            return redirect()->route('admin.categories.index')
+            return redirect()->route('admin.sources.index')
                 ->with('success', 'Запись успешно удалена');
         }
+
         return back()->with('error', 'Не удалось удалить запись')
             ->withInput();
+
+        //$source->restore(); // восстановить из корзины
+
     }
+
+
 }
