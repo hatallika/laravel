@@ -56,7 +56,7 @@
         </div>
 
 
-        <input type="submit" class="btn btn-success float-end mt-2" value="Создать">
+        <input type="submit" class="btn btn-success float-end mt-2" value="Сохранить">
     </form>
 
 @endsection

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use function PHPUnit\Framework\isNull;
 
-class ProfileController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -91,14 +91,13 @@ class ProfileController extends Controller
     public function update(EditRequest $request, User $user)
     {
 
-        /*$fields = ($request->only(
-            ['name', 'email', 'is_admin']));*/
-
         $fields = ($request->validated());
 
+        //Если в админке не ввели новый пароль, то он остается прежним. Удаляем поле пароль из записи данных.
         if (($request->input('password')) == null){
             unset($fields ['password']);
         }
+        //Если пароль введен то добавим его в изменения
         $fields['password'] = Hash::make($request->input('password'));
         $updated = $user->fill($fields)->save();
 
@@ -116,8 +115,13 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        try{
+            $user->delete();
+            return response()->json('ok');
+        }catch (\Exception $e){
+            \Log::error("Не удалось удалить пользователя");
+        }
     }
 }
