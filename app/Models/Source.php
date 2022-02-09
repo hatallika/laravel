@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Source extends Model
@@ -20,4 +21,9 @@ class Source extends Model
         'url',
         'active'
     ];
+
+    public function news(): HasMany
+    {
+        return $this->hasMany(News::class, 'sources_id', 'id');
+    }
 }

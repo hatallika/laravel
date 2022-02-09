@@ -6,5 +6,5 @@ namespace App\Contracts;
 interface Parser
 {
     public function load(string $link): self;
-    public function start(): array;
+    public function start(string $schemaName): array;
 }

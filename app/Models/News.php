@@ -20,7 +20,8 @@ class News extends Model
         'slug',
         'author',
         'status',
-        'description'
+        'description',
+        'sources_id'
     ];
 
     protected $casts = [
@@ -30,6 +31,11 @@ class News extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    public function sources(): BelongsTo
+    {
+        return $this->belongsTo(Source::class, 'sources_id', 'id');
     }
 
     //protected $guarded = ['id'];

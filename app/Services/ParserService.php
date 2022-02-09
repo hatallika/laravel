@@ -14,22 +14,8 @@ class ParserService implements  Parser
 
     protected BaseDocument $load;
 
-    /**
-     * @param string $link
-     * @return Parser
-     */
-    public function load(string $link): Parser
-    {
-        $this->load = XmlParser::load($link);
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function start(): array
-    {
-        return $this->load->parse([
+    protected array $schema = [
+        'yandex' => [
             'title' => [
                 'uses'=>'channel.title'
             ],
@@ -45,6 +31,42 @@ class ParserService implements  Parser
             'news' => [
                 'uses'=>'channel.item[title,link,guid,description,pubDate]'
             ],
-        ]);
+        ],
+
+        'mail' => [
+            'title' => [
+                'uses'=>'channel.image.title'
+            ],
+            'description' =>[
+                'uses'=>'channel.description'
+            ],
+            'link' =>[
+                'uses'=>'channel.image.link'
+            ],
+            'image'=>[
+                'uses'=>'channel.image.url'
+            ],
+            'news' => [
+                'uses'=>'channel.item[title,link,guid,description,pubDate]'
+            ],
+        ]
+    ];
+
+    /**
+     * @param string $link
+     * @return Parser
+     */
+    public function load(string $link): Parser
+    {
+        $this->load = XmlParser::load($link);
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function start(string $schemaName): array
+    {
+        return $this->load->parse($this->schema[$schemaName]);
     }
 }
