@@ -10,7 +10,7 @@
 
     @include('inc.message')
 
-    <form method="POST" action="{{route("admin.news.update", ['news' => $news]) }}">
+    <form method="POST" action="{{route("admin.news.update", ['news' => $news]) }}" enctype="multipart/form-data">
         {{--<input type="hidden" name="_token" value="{{csrf_token()}}"/>--}}
         @csrf
         @method('put')
@@ -24,6 +24,13 @@
         <div class="form-group">
             <label for="author">Автор</label>
             <input type="text" class="form-control" id="author" name="author" value="{{$news->author}}" }>
+            @error('author') <strong style="color: red;">{{$message}}</strong>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="image">Изображение</label>
+            {{--get file link--}}
+            <input type="file" class="form-control" id="image" name="image">
             @error('author') <strong style="color: red;">{{$message}}</strong>@enderror
         </div>
 
