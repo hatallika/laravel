@@ -68,12 +68,16 @@ class ParserService implements  Parser
     /**
      * @return array
      */
-    public function start(string $schemaName): void
+    public function start(string $schemaName): array
     {
         $data =  $this->load->parse($this->schema[$schemaName]);
 
+
         $explode = explode("/",$this->fileName);
         $name = end($explode); //последний элемент массива
-        \Storage::append('parsing/' . $name, json_encode($data));
+       \Storage::append('parsing/' . $name, json_encode($data));
+
+       return $data;
     }
 }
+

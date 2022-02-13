@@ -9,6 +9,8 @@ use App\Models\Category;
 use App\Models\News;
 use App\Services\UploadService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Request;
+use Intervention\Image\Facades\Image as Image;
 
 
 class NewsController extends Controller
@@ -142,4 +144,6 @@ class NewsController extends Controller
         }
 
     }
+
+
 }

@@ -8,5 +8,5 @@ use voku\helper\ASCII;
 interface Parser
 {
     public function load(string $link): self;
-    public function start(string $schemaName): void;
+    public function start(string $schemaName): array;
 }

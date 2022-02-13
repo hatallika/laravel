@@ -4,6 +4,7 @@
     use App\Http\Controllers\Account\IndexController as AccountController;
     use App\Http\Controllers\Account\ProfileController;
     use App\Http\Controllers\Admin\ParserController;
+    use App\Http\Controllers\Admin\UploadController;
     use App\Http\Controllers\Admin\UsersController;
     use App\Http\Controllers\Admin\SourcesController;
     use App\Http\Controllers\CategoriesController;
@@ -54,6 +55,10 @@ Route::get('/categories/{id_category}', [NewsController::class, 'show_by_categor
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
+//upload images
+    Route::post('editor/image_upload', [UploadController::class, 'upload'])->name('upload');
+
+
 
 
 //admin routes
