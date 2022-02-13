@@ -50,6 +50,11 @@ Route::get('/categories', [CategoriesController::class, 'index'])->name('categor
 Route::get('/categories/{id_category}', [NewsController::class, 'show_by_category'])
     ->name('news.category');
 
+//laravel-filemanager
+    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+        \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
+
 
 //admin routes
 Route::group(['middleware' =>'auth'], function (){
@@ -75,6 +80,19 @@ Route::group(['middleware' =>'auth'], function (){
         Route::resource('/categories',AdminCategoryController::class);
         Route::resource('/sources',SourcesController::class);
         Route::resource('/users', UsersController::class);
+
+        Route::get('/news/{news}/deleteimg', function (\App\Models\News $news){
+
+            try{
+                $news->image=null;
+                $news->save();
+                return response()->json('ok');
+            }catch (\Exception $e){
+                \Log::error("Error delete news item");
+            }
+
+
+        });
     });
 });
 

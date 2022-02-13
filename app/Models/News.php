@@ -13,7 +13,7 @@ class News extends Model
     use HasFactory, Sluggable;
     protected $table = 'news';
 
-    public static $availableFields = ['id', 'title', 'author', 'status', 'description', 'created_at', 'category_id'];
+    public static $availableFields = ['id', 'title', 'author', 'status', 'description', 'created_at', 'category_id', 'image'];
 
     protected $fillable = [
         'category_id',

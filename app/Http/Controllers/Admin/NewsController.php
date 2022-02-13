@@ -92,6 +92,7 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
+
         $categories = Category::query()->get();
 
         return view('admin.news.edit', [
@@ -109,6 +110,7 @@ class NewsController extends Controller
      */
     public function update(EditRequest $request, News $news)
     {
+
         $validated = $request->validated();
 
         if($request->hasFile('image')) {
