@@ -153,15 +153,5 @@ class NewsController extends Controller
             \Log::error("Error delete news item");
         }
 
-
-        /*deleted from form
-         * $deleted = $news->delete();
-        if($deleted){
-            return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успешно удалена');
-        }
-        return back()->with('error', 'Не удалось удалить запись')
-            ->withInput();
-        */
     }
 }

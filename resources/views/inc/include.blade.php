@@ -1,1 +1,1 @@
-Hello, {{$name}}
+Привет, {{Auth::user()->name}}
