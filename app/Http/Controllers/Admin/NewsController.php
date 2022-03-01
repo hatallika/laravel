@@ -7,7 +7,10 @@ use App\Http\Requests\News\CreateRequest;
 use App\Http\Requests\News\EditRequest;
 use App\Models\Category;
 use App\Models\News;
-
+use App\Services\UploadService;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Request;
+use Intervention\Image\Facades\Image as Image;
 
 
 class NewsController extends Controller
@@ -15,7 +18,7 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -36,7 +39,7 @@ class NewsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -52,27 +55,10 @@ class NewsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateRequest $request)
     {
-
-        //1 способ валидации
-       /* $request->validate([
-            'title' => ['required', 'string', 'min:5']
-        ]);*/
-
-        //2 способ валидации
-        /*try {
-            $this->validate($request, [
-                'title' => ['required', 'string', 'min:5']
-            ]);
-        }catch (ValidationException $e) {
-            dd($e->validator->getMessageBag());
-        }
-        */
-
-        //3 способ в классе CreateRequest
 
         $created = News::create($request->validated() + [
                 'slug' => \Str::slug($request->input('title'))
@@ -93,7 +79,7 @@ class NewsController extends Controller
      * Display the specified resource.
      *
      * @param News $news
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(News $news)
     {
@@ -104,10 +90,11 @@ class NewsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param News $news
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit(News $news)
     {
+
         $categories = Category::query()->get();
 
         return view('admin.news.edit', [
@@ -121,14 +108,17 @@ class NewsController extends Controller
      *
      * @param EditRequest $request
      * @param News $news
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(EditRequest $request, News $news)
     {
 
-        $updated = $news->fill($request->validated() + [
-                'slug' => \Str::slug($request->input('title'))
-            ])->save();
+        $validated = $request->validated();
+
+        if($request->hasFile('image')) {
+            $validated['image'] = app(UploadService::class) -> start($request->file('image'));// будет получена ссылка из сервиса UploadService
+        }
+        $updated = $news->fill($validated )->save();
 
         if($updated){
             return redirect()->route('admin.news.index')
@@ -142,7 +132,7 @@ class NewsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param News $news
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(News $news)
     {
@@ -154,4 +144,6 @@ class NewsController extends Controller
         }
 
     }
+
+
 }

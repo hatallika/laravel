@@ -19,19 +19,36 @@ class SourcesSeeder extends Seeder
 
     private function getData()
     {
+
+        $links=[
+            'https://news.yandex.ru/auto.rss',
+            'https://news.yandex.ru/auto_racing.rss',
+            'https://news.yandex.ru/army.rss',
+            'https://news.yandex.ru/gadgets.rss',
+            'https://news.yandex.ru/index.rss',
+            'https://news.yandex.ru/martial_arts.rss',
+            'https://news.yandex.ru/communal.rss',
+            'https://news.yandex.ru/health.rss',
+            'https://news.yandex.ru/games.rss',
+            'https://news.yandex.ru/internet.rss',
+            'https://news.yandex.ru/cyber_sport.rss',
+            'https://news.yandex.ru/movies.rss',
+            'https://news.yandex.ru/cosmos.rss',
+            'https://news.yandex.ru/culture.rss',
+            'https://news.yandex.ru/fire.rss',
+            'https://news.yandex.ru/championsleague.rss',
+            'https://news.yandex.ru/music.rss',
+            'https://news.yandex.ru/nhl.rss',
+        ];
+
+
         $faker = Factory::create();
         $data = [];
-        for($i = 0; $i < 10; $i++ ) {
+        foreach($links as $link ) {
             $data[] = [
                 'title' => $faker->sentence(mt_rand(3,5)),
-                'url'=> $faker->url(),
+                'url'=> $link,
                 'description'=> $faker->text(mt_rand(100,200))
-
-                /*'description' => function($faker){      //null or  text
-                $input = [null, $faker->text(mt_rand(100, 200))];
-                $rand_keys = rand(0,1);
-                return $input[$rand_keys];
-            }*/
             ];
         }
         return $data;
