@@ -76,7 +76,7 @@ class NewsController extends Controller
 
         $created = News::create($request->validated() + [
                 'slug' => \Str::slug($request->input('title'))
-            ]
+            ] + ['sources_id' => '1']
         );
 
         if($created){

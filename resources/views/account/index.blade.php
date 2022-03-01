@@ -22,7 +22,11 @@
     @endif
     <a href="{{route('account.logout')}}">Выход</a>
     <br>
-
+<div style="width: 30%" class="bg_info rounded-circle">
+    @if(Auth::user()->avatar)
+        <img src="{{Auth::user()->avatar}}"   alt="avatar">
+    @endif
+</div>
 <div>
     Имя: {{$user->name}} <br>
     E-mail: {{$user->email}} <br>

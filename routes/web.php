@@ -3,16 +3,19 @@
 
     use App\Http\Controllers\Account\IndexController as AccountController;
     use App\Http\Controllers\Account\ProfileController;
+    use App\Http\Controllers\Admin\ParserController;
     use App\Http\Controllers\Admin\UsersController;
     use App\Http\Controllers\Admin\SourcesController;
     use App\Http\Controllers\CategoriesController;
     use App\Http\Controllers\FeedBackController;
     use App\Http\Controllers\InfoController;
     use App\Http\Controllers\OrderController;
+    use App\Http\Controllers\SocialController;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\NewsController;
     use App\Http\Controllers\Admin\NewsController as AdminNewsController;
     use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+
 
 
 /*
@@ -63,7 +66,11 @@ Route::group(['middleware' =>'auth'], function (){
     Route::resource('/profile', ProfileController::class);
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function(){
-        Route::view('/', 'admin.index', ['someVariable' => 'someText'])->name('index');
+
+        Route::get('/parser', ParserController::class)
+            ->name('parser');
+        Route::view('/', 'admin.index', ['someVariable' => 'someText'])
+            ->name('index');
         Route::resource('/news',AdminNewsController::class);
         Route::resource('/categories',AdminCategoryController::class);
         Route::resource('/sources',SourcesController::class);
@@ -76,11 +83,32 @@ Route::group(['middleware' =>'auth'], function (){
 Route::resource('/feedback', FeedBackController::class);
 Route::resource('/order', OrderController::class);
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
-
-
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//auth vkontakte
+Route::group(['middleware'=>'guest', 'prefix'=>'auth', 'as'=>'social.'], function (){
+
+    Route::get('/{network}/redirect', [SocialController::class, 'redirect'])
+        ->name('redirect');
+
+    Route::get('/{network}/callback', [SocialController::class, 'callback'])
+        ->name('callback');
+});
+
+
+
+
+
+    /*Route::get('/', function () {
+        return view('welcome');
+    });*/
+
+
+
+    //scopeAdmins in UserModel
+/*Route::get('/admins', function (){
+    $users = \App\Models\User::query()->admins()->get();
+    dd($users);
+});*/
 

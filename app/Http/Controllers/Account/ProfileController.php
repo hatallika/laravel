@@ -64,7 +64,7 @@ class ProfileController extends Controller
     public function edit(User $profile)
     {
         if( Auth::user()->getAuthIdentifier() != $profile->id){
-            return redirect()->route('account');
+            return redirect()->route('account')->withErrors('Вы можете редактировать только свой профиль');;
         }
         return view('account.profile.edit', [
             'profile' => $profile
