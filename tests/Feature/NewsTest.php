@@ -4,12 +4,14 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\News;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class NewsTest extends TestCase
 {
+    //use RefreshDatabase;
     /**
      * A basic feature test example.
      *
@@ -24,7 +26,7 @@ class NewsTest extends TestCase
 
     public function testNewsShow()
     {   //проверяем конкретную новость, что открывается
-        $response = $this->get(route('news.show', ['id' => mt_rand(1, 10)]));
+        $response = $this->get(route('news.show', ['news' => '1']));
 
         $response->assertStatus(200);
     }
@@ -44,18 +46,15 @@ class NewsTest extends TestCase
     }
 
     public function testNewsAdminCreated()
-    {   //проверим создание новости на возврат json
-        $responseData = [
-            'title' => 'Some title',
-            'author' => 'Admin',
-            'status' => 'draft',
-            'description' => 'Some text'
-        ];
+    {
+        $category = Category::factory()->create();
+        $responseData = News::factory()->definition();
+        $responseData = $responseData + ['category_id' => $category->id];
 
-        $response = $this->post(route('admin.news.store'), $responseData );
+        $response = $this->post(route('admin.news.store'), $responseData);
 
-        $response->assertJson($responseData);
-        $response->assertStatus(200);
+        //$response->assertJson($responseData);
+        $response->assertStatus(302);
 
     }
 
@@ -69,13 +68,9 @@ class NewsTest extends TestCase
 
     public function testViewAdminNewsCreateContainsData()
     {
-        $categoriesObj = (new Category())->getCategories();
-        $categories = [];
-        foreach ($categoriesObj as $item) {
-            $categories[] = $item->title;
-        }
-        $response = $this->get(route('admin.news.create'));
+        $categories = Category::all();
 
+        $response = $this->get(route('admin.news.create'));
         $response->assertViewHas('categories', $categories);
     }
 

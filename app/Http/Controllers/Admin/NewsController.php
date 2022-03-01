@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\News\CreateRequest;
+use App\Http\Requests\News\EditRequest;
 use App\Models\Category;
 use App\Models\News;
-use Illuminate\Http\Request;
 
 
 
@@ -39,7 +40,6 @@ class NewsController extends Controller
      */
     public function create()
     {
-
         //$categories = Category::query()->get();
         $categories = Category::all();
 
@@ -51,22 +51,30 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param CreateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //dd($request->all());
 
-        $request->validate([
+        //1 способ валидации
+       /* $request->validate([
             'title' => ['required', 'string', 'min:5']
-        ]);
+        ]);*/
 
-//        $data = json_encode($request->all());
-//        file_put_contents(public_path('news_/data.json'), $data);
+        //2 способ валидации
+        /*try {
+            $this->validate($request, [
+                'title' => ['required', 'string', 'min:5']
+            ]);
+        }catch (ValidationException $e) {
+            dd($e->validator->getMessageBag());
+        }
+        */
 
-        $created = News::create(
-            $request->only(['category_id', 'title', 'author',  'status', 'description']) + [
+        //3 способ в классе CreateRequest
+
+        $created = News::create($request->validated() + [
                 'slug' => \Str::slug($request->input('title'))
             ]
         );
@@ -111,14 +119,14 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param EditRequest $request
      * @param News $news
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(EditRequest $request, News $news)
     {
-        //$news->title = "Blablabla";
-        $updated = $news->fill($request->only(['category_id', 'title', 'author',  'status', 'description']) + [
+
+        $updated = $news->fill($request->validated() + [
                 'slug' => \Str::slug($request->input('title'))
             ])->save();
 
@@ -138,13 +146,22 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
+        try{
+            $news->delete();
+            return response()->json('ok');
+        }catch (\Exception $e){
+            \Log::error("Error delete news item");
+        }
 
-        $deleted = $news->delete();
+
+        /*deleted from form
+         * $deleted = $news->delete();
         if($deleted){
             return redirect()->route('admin.news.index')
                 ->with('success', 'Запись успешно удалена');
         }
         return back()->with('error', 'Не удалось удалить запись')
             ->withInput();
+        */
     }
 }

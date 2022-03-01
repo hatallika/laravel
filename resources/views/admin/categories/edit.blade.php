@@ -18,10 +18,13 @@
             <div class="form-group">
                 <label for="title">Название категории</label>
                 <input type="text" class="form-control" id="title" name="title" requiredс value="{{$category->title}}">
+                @error('title') <strong style="color:red;">{{$message}}</strong>@enderror
+
             </div>
             <div class="form-group">
                 <label for="description">Описание категории</label>
                 <textarea class="form-control" name="description" id="description" cols="30" rows="3">{!! $category->description !!}</textarea>
+                @error('description') <strong style="color:red;">{{$message}}</strong>@enderror
             </div>
             <button type="submit" class="btn btn-success float-end mt-2">Сохранить</button>
 

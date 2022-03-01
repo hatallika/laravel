@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\CreateRequest;
+use App\Http\Requests\Category\EditRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -37,9 +39,10 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $created = Category::create($request->only(['title', 'description']));
+        $created = Category::create($request->validated());
+
         if($created){
             return redirect()->route('admin.categories.index')
                 ->with('success', 'Запись успешно добавлена');
@@ -81,7 +84,7 @@ class CategoryController extends Controller
      * @param Category $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(EditRequest $request, Category $category)
     {
         $updated = $category->fill($request->only(['title', 'description']))
             ->save();
@@ -102,12 +105,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $deleted = $category->delete();
-        if($deleted){
-            return redirect()->route('admin.categories.index')
-                ->with('success', 'Запись успешно удалена');
+
+        try{
+            $category->delete();
+            return response()->json('ok');
+        }catch (\Exception $e){
+            \Log::error("Неудалось удалить категорию");
         }
-        return back()->with('error', 'Не удалось удалить запись')
-            ->withInput();
+
     }
 }

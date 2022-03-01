@@ -41,7 +41,7 @@
                     </td>
                     <td>
                         <a href="{{route('admin.categories.edit', ['category' => $category]) }}">Ред.</a>&nbsp;
-                        {{--<a href="javascript:;" style="color:red;">Уд.</a>--}}
+                        <a href="javascript:;" class="delete" rel="{{$category->id}}" style="color:red;">Уд.</a>
                         <form method="post" action="{{ route('admin.categories.destroy', ['category' => $category]) }}">
 
                             {{ csrf_field() }}
@@ -63,8 +63,34 @@
     {{$categories->links()}}
 
 @endsection
-{{-- @push('js')
-    <script>
-        alert("Hello, categories")
+@push('js')
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function (){
+            const el = document.querySelectorAll(".delete");
+            el.forEach(function(e, k) {
+                e.addEventListener('click', function (){
+                    const id = e.getAttribute("rel");
+                    if(confirm("Подтверждаете удаление категории с #ID=" + id + "?")){
+                        send('/admin/categories/' + id).then(()=>{
+                            location.reload();
+                        });
+                    }
+                });
+
+            });
+        });
+
+        async function send(url) {
+            let response = await fetch(url,  {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+
+            let result = await response.json();
+            return result.ok;
+
+        }
     </script>
-@endpush --}}
+@endpush
